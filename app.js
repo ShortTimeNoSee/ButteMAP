@@ -1890,6 +1890,10 @@ function geCompletionForProgram(prog, tr) {
 
     // Rough “classes left”: max of course deficit and units/3
     const leaves = listAreaLeaves(g.logic);
+    const doneLeaves = leaves.filter(a => {
+      const s = out.perArea[a];
+      return s && s.have >= (s.needCourses||0) && s.units >= (s.needUnits||0);
+    });
     let missing = 0;
     for (const a of leaves) {
       const s = out.perArea[a] || { have:0, units:0, needCourses:0, needUnits:0 };
@@ -1910,7 +1914,9 @@ function geCompletionForProgram(prog, tr) {
       label: `${g.pattern.toUpperCase()} ${g.catalog_year}`,
       patternUsed: g.pattern,
       geSetId: g.id,
-      est_remaining_courses: missing
+      est_remaining_courses: missing,
+      required_leaves: leaves.length,
+      satisfied_leaves: doneLeaves.length
     };
   }
 
@@ -1928,10 +1934,20 @@ function geCompletionForProgram(prog, tr) {
   }
   if (!candidates.length) return {pct:0, label:'No eligible GE pattern under rights'};
 
-  let best = {pct:0, label:''};
+  let best = {pct:0, label:'', required_leaves:0, satisfied_leaves:0};
   for (const g of candidates) {
     const out = evaluateGE(g, tr);
-    if (out.percent/100 > best.pct) best = { pct: out.percent/100, label: `${g.pattern.toUpperCase()} ${g.catalog_year}` };
+    const leaves = listAreaLeaves(g.logic);
+    const doneLeaves = leaves.filter(a => {
+      const s = out.perArea[a];
+      return s && s.have >= (s.needCourses||0) && s.units >= (s.needUnits||0);
+    });
+    if (out.percent/100 > best.pct) best = {
+      pct: out.percent/100,
+      label: `${g.pattern.toUpperCase()} ${g.catalog_year}`,
+      required_leaves: leaves.length,
+      satisfied_leaves: doneLeaves.length
+    };
   }
   return best;
 }
@@ -1970,10 +1986,12 @@ function rankPrograms() {
     const isGECert = !!(gePatternForCertificate(p)) && (courseScore.requiredItems || 0) === 0;
     const geRequired = isGECert || needsLocal || needsADTGE;
 
-    const wProg = ignoreGE ? 1.0 : (geRequired ? 0.7 : 1.0);
-    const wGE   = ignoreGE ? 0.0 : (geRequired ? 0.3 : 0.0);
+    const reqAtoms = (courseScore.requiredItems || 0)
+                   + (geRequired && !ignoreGE ? (geScore.required_leaves || 0) : 0);
+    const metAtoms = (courseScore.satisfied || 0)
+                   + (geRequired && !ignoreGE ? (geScore.satisfied_leaves || 0) : 0);
 
-    let total = wProg*courseScore.pct*courseScore.confidence + wGE*geScore.pct;
+    let total = reqAtoms ? (metAtoms / reqAtoms) : 0;
 
     if (isGECert) total = geScore.pct;
 
