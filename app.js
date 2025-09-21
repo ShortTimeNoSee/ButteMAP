@@ -1944,11 +1944,15 @@ function rankPrograms() {
     const courseScore = scoreProgramCourseCompletion(p, tr, countPlanned);
     const geScore = geCompletionForProgram(p, tr);
 
-    const wProg = ignoreGE ? 1.0 : 0.7;
-    const wGE   = ignoreGE ? 0.0 : 0.3;
+    const {needsLocal, needsADTGE} = programRequiresGE(p);
+    const isGECert = !!(gePatternForCertificate(p)) && (courseScore.requiredItems || 0) === 0;
+    const geRequired = isGECert || needsLocal || needsADTGE;
+
+    const wProg = ignoreGE ? 1.0 : (geRequired ? 0.7 : 1.0);
+    const wGE   = ignoreGE ? 0.0 : (geRequired ? 0.3 : 0.0);
+
     let total = wProg*courseScore.pct*courseScore.confidence + wGE*geScore.pct;
 
-    const isGECert = !!(gePatternForCertificate(p)) && (courseScore.requiredItems || 0) === 0;
     if (isGECert) total = geScore.pct;
 
     let remainingProg = Math.max(0, (courseScore.requiredItems || 0) - (courseScore.satisfied || 0));
@@ -1958,7 +1962,7 @@ function rankPrograms() {
       remainingSource = 'ge';
     }
 
-    rows.push({ prog:p, total, courseScore, geScore, ignoreGE, remainingProg, remainingSource });
+    rows.push({ prog:p, total, courseScore, geScore, ignoreGE, geRequired, remainingProg, remainingSource });
   }
 
   // Dedup by stable family key; keep newest AY; tie-break by score
@@ -2036,8 +2040,11 @@ function renderPrograms() {
 
     const detailsHtml = crossListHeader + secHtml;
 
-    const geLabel = r.ignoreGE ? 'GE: ignored' :
-      `GE: ${Math.round(r.geScore.pct*100)}% ${r.geScore.label?`(${r.geScore.label})`:''}`;
+    const geLabel = r.ignoreGE
+      ? 'GE: ignored'
+      : (!r.geRequired
+          ? 'GE: not required'
+          : `GE: ${Math.round(r.geScore.pct*100)}% ${r.geScore.label?`(${r.geScore.label})`:''}`);
 
     const card = document.createElement('div');
     card.className = 'prog';
