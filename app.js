@@ -325,11 +325,33 @@ function evaluateProgram(detail, transcript, countPlanned = false) {
   const takenSet = new Set(takenCodesRaw.map(c => canonicalizeCode(c)).map(norm));
   for (const code of buildExamEquivalencyCodes(state.userExams)) takenSet.add(code);
 
-  const sections = (detail.sections || []).map(sec => ({
-    name: sec.name,
-    rule: sec.rule || { type: 'ALL' },
-    items: indexSectionItems(sec)
-  }));
+  // Runtime safety net: if a section is labeled like "Select two" but came in as LIST,
+  // coerce it to COUNT with the correct min.
+  function wordsToNum(w) {
+    const map = { one:1, two:2, three:3, four:4, five:5, six:6, seven:7, eight:8, nine:9, ten:10 };
+    if (!w) return null;
+    const s = String(w).toLowerCase();
+    if (/^\d+$/.test(s)) return parseInt(s,10);
+    return map[s] ?? null;
+  }
+  function coerceSelectCountRule(sec) {
+    if (!sec || !sec.name) return sec;
+    const m = /^\s*Select\s+(\w+)/i.exec(sec.name);
+    if (m && ruleTypeOf(sec.rule?.type) === 'LIST') {
+      const n = wordsToNum(m[1]);
+      if (n) sec.rule = { type: 'COUNT', min: n, max: n };
+    }
+    return sec;
+  }
+
+  const sections = (detail.sections || []).map(s0 => {
+    const sec = coerceSelectCountRule({ ...s0 });
+    return {
+      name: sec.name,
+      rule: sec.rule || { type: 'ALL' },
+      items: indexSectionItems(sec)
+    };
+  });
 
   const poolsByList = {};
   for (const s of sections) poolsByList[s.name] = s.items;

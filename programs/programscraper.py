@@ -75,7 +75,7 @@ SELECT_UNITS_MIN_DISCIPLINES_RE = re.compile(
     re.IGNORECASE,
 )
 
-AREA_HEADER_RE = re.compile(r"^\s*([A-Za-z][A-Za-z\s/&-]*[A-Za-z])\s*:\s*$")
+AREA_HEADER_RE = re.compile(r"^\s*(?!Select\b)([A-Za-z][A-Za-z\s/&-]*[A-Za-z])\s*:\s*$", re.IGNORECASE)
 SELECT_UNITS_RE = re.compile(r"^\s*Select\s+(\w+)\s+units?\b.*?:?\s*$", re.IGNORECASE)
 SELECT_N_RE = re.compile(r"^\s*Select\s+(\w+)\s*:?\s*$", re.IGNORECASE)
 
@@ -337,14 +337,12 @@ def parse_program_info_html_minimal(html: str) -> Dict[str, Any]:
 
         # Section headers
         if not has_link:
-            name, rule = parse_list_header_text(txt)
-            if name:
+            m_sel = SELECT_N_RE.match(txt)
+            if m_sel:
+                n = word_or_int(m_sel.group(1)) or 1
                 flush_section()
-                current_section = start_section(name, rule)
-                select_block = {"active": False, "min": 0}
-                if pending_cross_rule and name.startswith("List "):
-                    lists_seen_in_group.append(name)
-                    pending_cross_rule["applies_to"] = lists_seen_in_group
+                current_section = start_section(f"Select {n}", {"type": "COUNT", "min": n, "max": n})
+                select_block = {"active": True, "min": n}
                 continue
 
             # "Select N units ... each area"
@@ -401,13 +399,15 @@ def parse_program_info_html_minimal(html: str) -> Dict[str, Any]:
                     lists_seen_in_group.append(area_name)
                 continue
 
-            # Inline "Select N" (COUNT)
-            m_sel = SELECT_N_RE.match(txt)
-            if m_sel:
-                n = word_or_int(m_sel.group(1)) or 1
+            # List headers (e.g., "List A (Select one)") and Required courses
+            name, rule = parse_list_header_text(txt)
+            if name:
                 flush_section()
-                current_section = start_section(f"Select {n}", {"type": "COUNT", "min": n, "max": n})
-                select_block = {"active": True, "min": n}
+                current_section = start_section(name, rule)
+                select_block = {"active": False, "min": 0}
+                if pending_cross_rule and name.startswith("List "):
+                    lists_seen_in_group.append(name)
+                    pending_cross_rule["applies_to"] = lists_seen_in_group
                 continue
 
         # Course row
