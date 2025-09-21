@@ -995,9 +995,12 @@ function renderTerms() {
         if (e.key !== 'Enter') return;
         e.preventDefault();
 
-        const norm = canonicalizeCode(inp.value);
-        if (isValidCourse(norm)) {
-          // Commit current row, then insert a new one below
+        const normVal = canonicalizeCode(inp.value);
+
+        if (isValidCourse(normVal)) {
+          inp.value = normalizeCode(normVal);
+          updateFromCode();
+
           term.items.splice(rIdx + 1, 0, {code:'', grade:'IP'});
           renderTerms(); recalcAll();
           const termsEls = $$('#terms .term');
@@ -1007,7 +1010,7 @@ function renderTerms() {
           return;
         }
 
-        // Accept first suggestion; if none, trim until one exists
+        // Not yet a valid course: autocomplete to first suggestion
         let suggestion = firstSuggestion(inp.value);
         if (!suggestion) {
           let v = normalizeCode(inp.value);
