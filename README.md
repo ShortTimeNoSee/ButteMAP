@@ -30,7 +30,16 @@ ButteMAP is a CLIENT-side web application that:
 - Ranks AA/AS/Certificate programs by completion percentage
 - Handles catalog rights across academic years
 
-All data stays local in the browser. Export/import plans as JSON.
+### Data Storage
+
+All your plan data stays local in your browser:
+
+- **Auto-save**: Your terms, exam credits, waivers, and catalog rights settings are automatically saved to `localStorage`. Refresh the page and your plan persists.
+- **Export**: Click "Export Plan" to download your plan as a JSON file. Use this for backups or to transfer your plan to another device/browser.
+- **Import**: Click "Import Plan" to load a previously exported JSON file. This replaces your current plan.
+- **Clear**: Click "Clear Plan" to wipe all terms, exams, and waivers. This is irreversible (unless you have an export).
+
+No data is sent to any server. Everything runs client-side.
 
 ## Quick Start
 

@@ -1116,7 +1116,10 @@ async function loadData() {
 
   status.replaceChildren(...badges);
 
+  loadPlanFromStorage();
+  
   buildCourseDatalist();
+  renderTerms();
   renderRightsControls();
   renderGETabs();
   populateExamOptions();
@@ -1458,6 +1461,57 @@ function populateExamOptions() {
 }
 
 // ======== Save/Load Plan ========
+const STORAGE_KEY = 'buttemap_plan';
+
+function savePlanToStorage() {
+  const payload = {
+    terms: state.terms,
+    rights: {auto: state.rights.auto, allow: Array.from(state.rights.allow)},
+    userExams: state.userExams
+  };
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  } catch(e) {
+    console.warn('Failed to save to localStorage', e);
+  }
+}
+
+function loadPlanFromStorage() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    state.terms = Array.isArray(data.terms) ? data.terms : [];
+    state.rights.auto = !!(data.rights?.auto);
+    state.rights.allow = new Set(data.rights?.allow || []);
+    state.userExams = Array.isArray(data.userExams) ? data.userExams : [];
+    return true;
+  } catch(e) {
+    console.warn('Failed to load from localStorage', e);
+    return false;
+  }
+}
+
+function clearPlan() {
+  if (!confirm('Clear all terms, exam credits, and waivers? This cannot be undone.')) return;
+  state.terms = [];
+  state.rights = { auto: true, allow: new Set() };
+  state.userExams = [];
+  localStorage.removeItem(STORAGE_KEY);
+  
+  const loteBox = $('#lote-waiver');
+  const hsChemBox = $('#hs-chemistry');
+  const hsAlgebraBox = $('#hs-intermediate-algebra');
+  if (loteBox) loteBox.checked = false;
+  if (hsChemBox) hsChemBox.checked = false;
+  if (hsAlgebraBox) hsAlgebraBox.checked = false;
+  
+  renderTerms();
+  renderRightsControls();
+  renderExamCredits();
+  recalcAll();
+}
+
 $('#btn-export').addEventListener('click', () => {
   const payload = {
     terms: state.terms,
@@ -1470,6 +1524,8 @@ $('#btn-export').addEventListener('click', () => {
   a.download = 'plan.json';
   a.click();
 });
+
+$('#btn-clear')?.addEventListener('click', clearPlan);
 $('#file-import').addEventListener('change', async (e) => {
   const f = e.target.files?.[0];
   if (!f) return;
@@ -2483,6 +2539,7 @@ function recalcAll() {
 
   renderGETabs();
   renderPrograms();
+  savePlanToStorage();
 }
 
 // ======== Filters ========
