@@ -397,6 +397,40 @@ button.small{
   line-height: 1.5;
 }
 
+.disclaimer{
+  background: rgba(243,156,18,.08);
+  border-color: var(--warning);
+  padding: var(--spacing-md) var(--spacing-lg);
+}
+.disclaimer::before{
+  background: var(--warning);
+}
+.disclaimer summary{
+  cursor: pointer;
+  color: var(--warning);
+  font-size: 0.95rem;
+}
+.disclaimer summary:hover{
+  color: var(--accent-soft);
+}
+.disclaimer p, .disclaimer li{
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: var(--spacing-sm) 0;
+}
+.disclaimer ul{
+  margin: var(--spacing-sm) 0;
+  padding-left: var(--spacing-xl);
+}
+.disclaimer a{
+  color: var(--primary);
+  text-decoration: none;
+}
+.disclaimer a:hover{
+  text-decoration: underline;
+}
+
 #ge-tabs{
   display:flex; 
   gap:var(--spacing-sm); 

@@ -2,6 +2,23 @@
 
 Academic planning tool for Butte College students. Plan terms, track GE progress, evaluate program completion, and find the best-fit degrees based on completed coursework.
 
+## Disclaimer
+
+**This tool does NOT replace a counselor.** ButteMAP is an unofficial planning aid. Always verify your academic plan with a Butte College counselor before making enrollment decisions.
+
+**This tool is naturally susceptible to errors:**
+
+- **Course data** is scraped from Ellucian's course search API. If the catalog updates, local data becomes stale until re-scraped.
+- **GE patterns** are manually authored by transcribing official GE worksheets. Transcription errors, omissions, or misinterpretations of policy are possible.
+- **Exam credit mappings** are parsed from HTML tables on Butte's website. These tables can change without notice, and the parser may misread edge cases.
+- **Program requirements** are fetched from the API via scraping. API structure changes, incomplete upstream data, or programs marked in unexpected/unsupported ways can cause missing/incorrect requirements.
+- **Prerequisite parsing** uses regex heuristics to convert human-readable requirement text into structured trees. Complex or ambiguous phrasing may be parsed incorrectly.
+- **Catalog rights logic** may not account for every edge case in Butte's actual policy.
+
+**Found an issue?** Report bugs, data errors, or suggestions:
+- GitHub Issues: https://github.com/ShortTimeNoSee/ButteMAP/issues
+- Email: nikolaythompson@gmail.com
+
 ## Overview
 
 ButteMAP is a CLIENT-side web application that:
