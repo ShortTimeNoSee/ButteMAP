@@ -1,0 +1,17 @@
+{
+  "alias_to_canonical_codes": {
+    "CMST 2": "COMM C1000",
+    "ENGL 2": "ENGL C1000",
+    "ENGL 3": "ENGL C1000E",
+    "ENGL 11": "ENGL C1001",
+    "POS 2": "POLS C1000",
+    "PSY 1": "PSYC C1000",
+    "MATH 18": "STAT C1000",
+    "MATH 18S": "STAT C1000E"
+  },
+  "prefix_alias_to_canonical_prefix": {
+    "PSY": "PSYC",
+    "POS": "POLS",
+    "CMST": "COMM"
+  }
+}

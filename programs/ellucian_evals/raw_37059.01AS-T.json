@@ -1,0 +1,90 @@
+{
+  "StudentId": "3532784",
+  "ApplicantId": null,
+  "CurrentUserIsStudent": true,
+  "CurrentUserIsApplicant": false,
+  "Notifications": [
+    {
+      "Message": "Public Health Science-AS-T (IGETC) has no requirements specified.",
+      "Type": "Information",
+      "Flash": true
+    }
+  ],
+  "Program": {
+    "Code": "37059.01AS-T",
+    "AcademicLevelCode": "UG",
+    "Title": "Public Health Science-AS-T (IGETC)",
+    "Catalog": "2025",
+    "Description": "The Associate in Science in Public Health Science for Transfer is intended for students who plan to complete a bachelor's degree in Associate in Science at a CSU campus. Students completing this degree are guaranteed admission to the CSU system, but not to a particular campus or major. Students transferring to a CSU campus that does accept this degree will be required to complete no more than 60 units after transfer to earn a bachelor's degree. This degree may not be the best option for students intending to transfer to a particular CSU campus or to a university or college that is not part of the CSU system. In all cases, students should consult with a counselor for more information on university admission and transfer requirements.",
+    "Departments": [
+      "Allied Health"
+    ],
+    "Locations": [
+      "Main Campus"
+    ],
+    "Majors": [
+      "Public Health Science"
+    ],
+    "Minors": [],
+    "Ccds": [],
+    "Specializations": [],
+    "Degree": "Associate in Science for Trans",
+    "MinimumCredits": 0.0,
+    "MinimumInstitutionalCredits": 0.0,
+    "CompletedCredits": 0.0,
+    "CompletedInstitutionalCredits": 0.0,
+    "InProgressCredits": 0.0,
+    "InProgressInstitutionalCredits": 0.0,
+    "PlannedCredits": 0.0,
+    "PlannedInstitutionalCredits": 0.0,
+    "TotalCredits": 0.0,
+    "TotalInstitutionalCredits": 0.0,
+    "AnticipatedGradDate": null,
+    "ProgramStartDate": "8/24/2020",
+    "ProgramEndDate": "8/24/2025",
+    "AcademicStartDate": "12/11/2023",
+    "AcademicEndDate": null,
+    "AcademicProgramStartDate": null,
+    "AcademicProgramEndDate": null,
+    "HideAnticipatedGradDate": true,
+    "InstitutionalCreditsModificationMessage": null,
+    "InstitutionalGpaModificationMessage": null,
+    "OverallCreditsModificationMessage": null,
+    "OverallGpaModificationMessage": null,
+    "CumulativeGpa": "",
+    "IsCumulativeGpaTooLow": false,
+    "InstitutionGpa": "",
+    "IsInstitutionGpaTooLow": false,
+    "MinimumOverallGpa": "0.000",
+    "MinimumInstitutionGpa": "0.000",
+    "Requirements": [],
+    "Proposed": true,
+    "NotAppliedAcademicCredits": [],
+    "NotAppliedPlannedCredits": [],
+    "RequiredRequirementCount": 0,
+    "CompletedRequirementCount": 0,
+    "CompletedRequirementPercent": 0.0,
+    "CompletionProgressText": "No requirements completed",
+    "HasDisclaimer": true,
+    "Notices": [],
+    "ProgramCatalogs": [
+      {
+        "CatalogYear": "2023",
+        "HideInWhatIf": false,
+        "CatalogStartDate": "8/21/2023"
+      },
+      {
+        "CatalogYear": "2024",
+        "HideInWhatIf": false,
+        "CatalogStartDate": "8/26/2024"
+      }
+    ],
+    "HideWhatIfCatalog": false,
+    "IsProgramUpdateVisible": false,
+    "IsProgramUpdateEnable": true,
+    "AcademicLevelStandings": [],
+    "ProgramStatusProcessingCode": "None",
+    "ExpandRequirements": "Collapse"
+  },
+  "RelatedPrograms": []
+}

@@ -1,0 +1,21 @@
+curl 'https://selfservice.butte.edu/student/Planning/Programs/ProgramEvaluation' \
+  -H '__isguestuser: false' \
+  -H '__requestverificationtoken: CfDJ8B0GSlrVWN9Dn-qVRI-h8-1BnABx3J425SdALJh2_8o60uFCRjkfflj7GVmuabmOkgLr72BaRSU6nXtX9zfQmOhpTKIN0AKFGiW7KMVcnPvd5XVmL-P9YZBDwxrla1XyR2-2-VaWVxgDsAVNr8mEWE084O062AGZRGAVW0tLIrmMrYJ1JxptzEvMMy7oIb_Z4g' \
+  -H 'accept: application/json, text/javascript, */*; q=0.01' \
+  -H 'accept-language: en-US,en;q=0.9' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json, charset=UTF-8' \
+  -b 'studentselfservice_productionV3_AuthMethod=SAML; studentselfservice_productionV3=CfDJ8B0GSlrVWN9Dn-qVRI-h8-3NGePBedgnXy81wmMQ0ZnSF949ajH46DkKJ2CcveYSHj2JblXHN1baxQdNqp_9GbrFGng0d49ySXFgzRJowka-1scgmPGmyZbN7uaCbtENg54uDmqSI6DqkyEGa9hbcp__pF6p7V3dJ5L_i10rHiVhBSiut1gWj0ABzs2QNvyVeVltBVromVkUwiF0zrLufuPLVSLgd7SIskmmVQTnREzK5GmQQtAW4kjNng2Q8edO_ArnnIBr4ktu7kvqA-ZlX9VYdXoi07SOUAuJpjJj0z1Q6dDEU7zcTpOzfiXcQv8-QVr0Ak0UmG61MlwWj-3EjG7RLbbdy6zathmex-zdK0taygPNV02NDV6ZAwwzQDRdhy5PkEmg_im7ScWc2Hbxczuo1mYrEjOhdxSaWczIclUpTlonJTxXPWoc7e-7nPd9PCx-36JDOmlxZzvszfIX36lYMRBgXeOVxANwgUN-y-tPR464J8GKAZj3dnMKT07LfTndWdnSAqlEuWGH3MBtlu98maaDz3YjN0UY6REse4PGxBpl3xCOJ-TZCprQ9ttF8IYxAohSlLAXIR5KAbL-v1ujMqTKkMR8pTwwK2sNaUstxvN4WUpx0MfAoeqCzLR46r3i3bRFQqO7opKY4CL84sdFVlL7tAzQcDy8GtLNvzsP_nOsqePjY8L4nN4AZ_DjOOYrNQ_pUo4NNyeL1bc283LG-lnHYAme0TYvwm0gJrf-h6U58Pw9ELNnrvFz2IOV3FuftIMokZWEiTgoAofdqqYO7Vlkl9xtoZjnDETiZDr7EGM09_ncNh5mw3ZPhWJ886xxBSW0gUQWIwDdH-HYFtnUh0IW72RmN-wJGl_Baij6sV4OYl3rcVfa1PwIICus_7fVj_LYHo8DcdU7PALKKj7M0gecq-ugLDVQcNcYTuI3loUtCzNU2wGtnLe9AkusAHXAnrV5tsVJNuknijLQEG7CsGybpr6tSu1DYfK6TmP36ONayZDsjyxZ60WNVmUIfafyvRosaWC6pz2hbr3jb2cut70968R1X_jfm8nLn6bHCX0U49E8nR12tlZIAQlfm0S-2QVkE_ZtxMMFmLpchhfJqRUlzwx0N-cqMt46z5F0T4uVxK_stYoNWVapfYdTabJksMVpaVLi1xF1bY9ElZMz3BVazVZTTcRCIdORlafnBzAZDOINBDfEySFhk1FSnYxDHOA46Q8gginOABWFJOjbidVFRAq5Ae6ceQRzypOE1THmc0syxhuz6Eaj2MBBbP4TaoY0-b5Pf_iuLU_T4R38DCfcWKqbxA3Jx08UI0QBKQ7PuoSIYReVe60HzBkO-OAvDSXqNUrXVKU6ZPwSDGaGZhczs0360Yq-aMz6v0pnHtsp-fguHFwk6K1Rsr6FWOR-17k2vKF4E6dtyvuhC07Lhcr7OtLr9yiZs5MLIt_lHXm9C7sYnApcnCF2lBtgI_sGh2WhOziIbpyD1UFa4N0avHEdmSg47nuG1sD2mJsH; studentselfservice_productionV3_sfid=136599N40F80; studentselfservice_productionV3_ls=CfDJ8B0GSlrVWN9Dn-qVRI-h8-2AYbRHL-Dmbq_mPIAGQfzW0hwJPb5WDa_r6EjBepzDFroNQuc0Hlu9kbyvOo_BIjCVEwvuh0D1SgDwN4b-BQ9rTvWL_esGkndzEheg7jWa1qb-gxdYti2JopzNaoEJzKA; studentselfservice_productionV3_Sso=CfDJ8B0GSlrVWN9Dn%2BqVRI%2Bh8%2B0By0D4RodG8cdLeMimd9X%2B0UvuUvJc%2Fin7zr281R6SPdpObI3I3Fec8cMGuymG9scVSNigt9fS6UhverwBVeftXeFXBZdqCbIZ0ngdfY8A8yTLaDUAGxIiuOFb4JS5lfyBEk16NtSufiXSHabnBNggAoYPHY6As6%2BKnwtkkccpLw%3D%3D; .ColleagueSelfServiceAntiforgery=CfDJ8B0GSlrVWN9Dn-qVRI-h8-3szy-Dnvxh5xG6PZ08fVRv-HTiQAjIFSVVoN_-iNAH3pZDmxPJnk9W5Po3WDuqZ_ZIPNQo2iouCccPZoqgh0pXYzA7k_fdQ-cx8Cgds75fMiiV6WXgdq3tTrq9o9pyD0U; studentselfservice_productionV3_0=CfDJ8B0GSlrVWN9Dn-qVRI-h8-1MiNNqkEO4ckAdWWKdu1b-W7HjxghSqHyRvw7WmJHY1q1rxoBPD-BZtY20qWbRDrB7Xf5VgAEv5rtG1mzwHvSiqOXGWLJIP4SgIUwDxokU_Rejcf3vHdIO9s1daMdEERcrTC7g_a-6KWnKLjLtOyWyCaIrVTRc_hRAOxDnHK4RyIPUiW2OfsHtyA7CUpidQEmtEbU_0X8QnGVziQl1UOETTTD7m-1OAKFrpiNLf4N6VEQA6bqLQlPD-ZmfjXHjoyRbVPlDXSYpgWtq2w8PdVI769SW-4BhA01V3MKwB6rmjMqFyj94149Ta6eni1sRpm-tQvuhtK9s5-ACcvOZICS05bU078g-ohepojV9m-sQwjW4gtCL8xf717-or-mD71fTp11wx-EZVuktofL5Mb-i-AoRUjouf7WduPRxSYYANF0vNZWbm7MRf5po0AFIshVB5CCr7dW790-Yvr8nQKdYMULZIjT5FwbN5q6juJORc_eNMOkbCBZK4Wyl_9pz0skxvHRnbNEhMOM3b9Ky1KO2zfbZwFUOkQb4cxseTEyqOGFMexGpf8OU9SpwNC-wy0zI4iQkZQ-ayWNIgLyjzayuA7h70n6ZlBxQVqCLrJ2Z9mPiplWRA32PQK5MuCKuSfuMcE9FqCK4aAidl_Zpkgy8Ck1SpF8FeiiNhM0dSlAljA' \
+  -H 'origin: https://selfservice.butte.edu' \
+  -H 'pragma: no-cache' \
+  -H 'priority: u=1, i' \
+  -H 'referer: https://selfservice.butte.edu/student/Planning/Programs/MyProgress' \
+  -H 'sec-ch-ua: "Not(A:Brand";v="8", "Chromium";v="144", "Google Chrome";v="144"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Linux"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36' \
+  -H 'x-requested-with: XMLHttpRequest' \
+  --data-raw '{"program":"44301.00AA","isWhatIfEvaluation":true,"studentId":"3532784"}'

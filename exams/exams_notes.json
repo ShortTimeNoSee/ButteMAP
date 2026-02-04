@@ -1,0 +1,122 @@
+[
+  {
+    "program": "AP",
+    "exam": "AP Studio Art Limitation",
+    "note": "*Maximum UC credit for 3 exams is 5.3 units"
+  },
+  {
+    "program": "AP",
+    "exam": "AP Calculus Exam Limitations",
+    "note": "Only one exam may be applied to Butte GE/course credit *Only one exam from Calculus and Computer Science may be used towards CSU transfer   **Maximum UC credit for exams is 5.3 units"
+  },
+  {
+    "program": "AP",
+    "exam": "AP Computer Science Exam Limitations",
+    "note": "Only one exam may be applied to Butte GE/course credit *Only one exam from Calculus and Computer Science may be used towards CSU transfer"
+  },
+  {
+    "program": "AP",
+    "exam": "AP English Exam Limitations",
+    "note": "*Maximum Butte College credit for both exams is 9 units      **Maximum UC credit for both exams is 5.3 units"
+  },
+  {
+    "program": "AP",
+    "exam": "AP Physics Exam Limitations",
+    "note": "Only one exam may be applied to Butte GE/course credit *Maximum 4 units toward GE and 6 units towards CSU transfer   **Maximum UC credit for exams\n5.3 units"
+  },
+  {
+    "program": "AP",
+    "exam": null,
+    "note": "Credit granted for AP scores of 3, 4, or 5; units are semester unless noted."
+  },
+  {
+    "program": "AP",
+    "exam": null,
+    "note": "Official AP results must be sent from College Board to Butte College Admissions & Records."
+  },
+  {
+    "program": "AP",
+    "exam": null,
+    "note": "Use of AP for Butte credit/GE/major per Butte policy; Cal-GETC per Butte and Cal-GETC policy."
+  },
+  {
+    "program": "AP",
+    "exam": null,
+    "note": "CSU info reflects systemwide policy and applies only to CSU transfers without GE certification."
+  },
+  {
+    "program": "AP",
+    "exam": null,
+    "note": "Course credit/units at Butte may differ from a transfer institution."
+  },
+  {
+    "program": "AP",
+    "exam": null,
+    "note": "If no Butte equivalency, major credit may be approved via substitution by department."
+  },
+  {
+    "program": "IB",
+    "exam": null,
+    "note": "IB credit applies to HL exams; official results required."
+  },
+  {
+    "program": "IB",
+    "exam": null,
+    "note": "IB can meet Cal-GETC and Butte GE/major per policies."
+  },
+  {
+    "program": "IB",
+    "exam": null,
+    "note": "Cal-GETC requires HL score 5/6/7; equates to 3 semester units."
+  },
+  {
+    "program": "IB",
+    "exam": null,
+    "note": "For transfer, UC grants 5.3 semester units for each HL exam with 5/6/7."
+  },
+  {
+    "program": "IB",
+    "exam": null,
+    "note": "CSU info reflects systemwide policy and applies only to CSU transfers without GE certification."
+  },
+  {
+    "program": "IB",
+    "exam": null,
+    "note": "IB credit at Butte may differ from transfer institutions."
+  },
+  {
+    "program": "CLEP",
+    "exam": null,
+    "note": "CLEP credit cannot be applied to Cal-GETC."
+  },
+  {
+    "program": "CLEP",
+    "exam": null,
+    "note": "CLEP can be used for CSU GE and AA/AS GE/major per policies."
+  },
+  {
+    "program": "CLEP",
+    "exam": null,
+    "note": "Official CLEP results must be sent to Butte College Admissions & Records."
+  },
+  {
+    "program": "CLEP",
+    "exam": null,
+    "note": "All units are semester unless noted."
+  },
+  {
+    "program": "CLEP",
+    "exam": null,
+    "note": "If no Butte equivalency, major credit may be via department substitution petition."
+  },
+  {
+    "program": "CLEP",
+    "exam": null,
+    "note": "Butte vs. transfer institution credits/units may differ."
+  },
+  {
+    "program": "CLEP",
+    "exam": null,
+    "note": "Language CLEP: if more than one in same language, only one may be applied; Level I=6 units, Level II adds units and Area 3B per CSU GE note."
+  }
+]

@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "pattern": "butte_local",
+  "catalog_year": "2024-2025",
+  "constraints": {
+    "min_total_units": 21,
+    "discipline_from_prefix": true
+  },
+  "logic": {
+    "op": "AND",
+    "nodes": [
+      { "area": "1A", "min_courses": 1, "min_units": 3 },
+      { "area": "1B", "min_courses": 1, "min_units": 3 },
+      { "area": "2",  "min_courses": 1, "min_units": 3 },
+      { "area": "3",  "min_courses": 1, "min_units": 3 },
+      { "area": "4",  "min_courses": 1, "min_units": 3 },
+      { "area": "5",  "min_courses": 1, "min_units": 3 },
+      { "area": "6",  "min_courses": 1, "min_units": 3 },
+      {
+        "group": "local_graduation_requirement",
+        "min_units": 2,
+        "op": "OR",
+        "nodes": [
+          { "bucket": "self_integration", "min_units": 2 },
+          { "bucket": "pe_activity", "min_units": 2 },
+          { "bucket": "cte_exploratory", "min_units": 2 }
+        ]
+      }
+    ]
+  },
+  "buckets": {
+    "1A": {
+      "courses": ["ENGL 2", "ENGL 3"]
+    },
+    "1B": {
+      "courses": ["CMST 2", "CMST 2H", "CMST 4", "CMST 14", "ENGL 11", "MATH 7", "PHIL 6", "PHIL 8"]
+    },
+    "2": {
+      "courses": [
+        "CSCI 2","CSCI 4","CSCI 20","DFT 4","ENGR 2",
+        "MATH 4","MATH 4s","MATH 5","MATH 11",
+        "MATH 12","MATH 12s","MATH 13","MATH 13s",
+        "MATH 18","MATH 18s","MATH 20","MATH 26","MATH 26s",
+        "MATH 28","MATH 28s","MATH 30","MATH 31","MATH 32","MATH 40","MATH 42"
+      ]
+    },
+    "3": {
+      "courses": [
+        "ART 1","ART 2","ART 2H","ART 3","ART 4","ART 4H","ART 5","ART 6",
+        "ASL 1","ASL 2","ASL 3","ASL 4",
+        "CHIN 1","CHIN 2",
+        "CMST 6",
+        "DRAM 2","DRAM 8",
+        "ECON 20","ECON 20H",
+        "ENGL 4","ENGL 6","ENGL 8","ENGL 10","ENGL 14","ENGL 15","ENGL 16","ENGL 20","ENGL 25","ENGL 26","ENGL 35","ENGL 47","ENGL 53H",
+        "FASH 74",
+        "FREN 1","FREN 2",
+        "GERM 1","GERM 2","GERM 3","GERM 4",
+        "HIST 3","HIST 5","HIST 8","HIST 10","HIST 18","HIST 21","HIST 23","HIST 26","HIST 30",
+        "HUM 17","HUM 22",
+        "ITAL 1","ITAL 2",
+        "JPN 1","JPN 2","JPN 3","JPN 4",
+        "LATN 1","LATN 2",
+        "MUS 1","MUS 5","MUS 6","MUS 7","MUS 9",
+        "PHIL 2","PHIL 4","PHIL 10","PHIL 16","PHIL 18",
+        "PHO 1",
+        "RTVF 13","RTVF 15",
+        "SPAN 1","SPAN 2","SPAN 3","SPAN 4","SPAN 14","SPAN 16"
+      ]
+    },
+    "4": {
+      "courses": [
+        "AB 22","AGS 10",
+        "AJ 1","AJ 2",
+        "ANTH 4","ANTH 4H","ANTH 13","ANTH 14","ANTH 16","ANTH 18","ANTH 32","ANTH 33","ANTH 34",
+        "ASL 10",
+        "BUS 20",
+        "CDF 12","CDF 14",
+        "CMST 9","CMST 10","CMST 13",
+        "ECON 2","ECON 4","ECON 20","ECON 20H","ECON 25",
+        "ETHS 1","ETHS 10","ETHS 30","ETHS 40",
+        "GEOG 4","GEOG 8","GEOG 10",
+        "HIST 3","HIST 5","HIST 8","HIST 10","HIST 18","HIST 20","HIST 26","HIST 30",
+        "HUM 17",
+        "MCGS 8","MCGS 10",
+        "NR 26",
+        "POS 2","POS 3","POS 12","POS 16","POS 18",
+        "PSY 1","PSY 1H","PSY 6","PSY 7","PSY 15","PSY 41",
+        "RTVF 12",
+        "SOC 2","SOC 4","SOC 5","SOC 8","SOC 10","SOC 14","SOC 20","SOC 30","SOC 30H"
+      ]
+    },
+    "5": {
+      "courses": [
+        "AGS 20","AGS 30","AGS 40","AGS 50",
+        "ANTH 2","ANTH 2H",
+        "BIOL 1","BIOL 2","BIOL 5","BIOL 7","BIOL 9","BIOL 9H","BIOL 10","BIOL 15","BIOL 20","BIOL 21","BIOL 41","BIOL 42","BIOL 43",
+        "CHEM 1","CHEM 2","CHEM 11","CHEM 21","CHEM 22","CHEM 51","CHEM 52",
+        "FN 2",
+        "GEOG 2","GEOG 3",
+        "GEOL 32","GEOL 34",
+        "NR 28",
+        "PHYS 10","PHYS 11","PHYS 21","PHYS 22","PHYS 41","PHYS 42","PHYS 43",
+        "PSC 10","PSC 11","PSC 12","PSC 27","PSC 30","PSC 30H","PSC 50","PSC 51","PSC 53",
+        "PSY 3"
+      ]
+    },
+    "6": {
+      "courses": ["ETHS 10","ETHS 30","ETHS 40"]
+    },
+    "self_integration": {
+      "courses": ["BUS 62","CDF 14","CLP 30","CSL 20","ENGL 31","FN 2","FN 8","HLTH 2","HLTH 10","LM 40","PSY 15","PSY 20","PSY 36","SOC 8","SOC 14"]
+    },
+    "cte_exploratory": {
+      "courses": ["AB 20","ALH 8","FASH 64","FN 15","HIM 56","ITEC 55","MSP 1"]
+    },
+    "pe_activity": {
+      "courses": [
+        "KIN 23","KIN 24","KIN 25","KIN 27","KIN 28","KIN 29","KIN 31","KIN 33","KIN 34","KIN 35",
+        "KIN 38","KIN 39","KIN 40","KIN 41","KIN 42","KIN 43","KIN 44","KIN 45","KIN 47","KIN 48",
+        "KIN 49","KIN 50","KIN 51","KIN 52","KIN 53","KIN 57","KIN 58","KIN 59","KIN 60","KIN 61",
+        "KIN 62","KIN 63","KIN 64","KIN 65","KIN 66","KIN 67","KIN 68","KIN 69","KIN 70","KIN 71",
+        "KIN 73","KIN 74","KIN 75","KIN 77","KIN 78","KIN 80","KIN 81","KIN 82","KIN 83",
+        "KIN 85","KIN 86","KIN 87","KIN 88","KIN 90","KIN 91","KIN 93","KIN 94"
+      ]
+    }
+  },
+  "attributes": {
+    "lab": [
+      "AGS 20","AGS 50",
+      "BIOL 1","BIOL 5","BIOL 10","BIOL 15","BIOL 20","BIOL 21","BIOL 41","BIOL 42","BIOL 43",
+      "CHEM 1","CHEM 2","CHEM 11","CHEM 21","CHEM 22","CHEM 51","CHEM 52",
+      "GEOG 3","GEOL 32","GEOL 34",
+      "PHYS 11","PHYS 21","PHYS 22","PHYS 41","PHYS 42","PHYS 43",
+      "PSC 10","PSC 11","PSC 12","PSC 30","PSC 30H","PSC 50","PSC 51"
+    ]
+  }
+}
