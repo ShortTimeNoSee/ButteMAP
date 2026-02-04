@@ -2,6 +2,8 @@
 
 Academic planning tool for Butte College students. Plan terms, track GE progress, evaluate program completion, and find the best-fit degrees based on completed coursework.
 
+**[Try ButteMAP](https://shorttimenosee.github.io/ButteMAP/)**
+
 ## Disclaimer
 
 **This tool does NOT replace a counselor.** ButteMAP is an unofficial planning aid. Always verify your academic plan with a Butte College counselor before making enrollment decisions.
