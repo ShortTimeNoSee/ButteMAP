@@ -48,6 +48,15 @@ python serve.py
 # Open http://127.0.0.1:8000
 ```
 
+If port 8000 is already in use (or you prefer another port), use Python's built-in server:
+
+```bash
+python -m http.server 8088
+# Open http://127.0.0.1:8088
+```
+
+Run from the project root so paths like `courses/` and `ge/` resolve correctly.
+
 Requires Python 3.8+. No external dependencies for the web app itself.
 
 ## Project Structure
