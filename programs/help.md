@@ -9,7 +9,7 @@
 
 2. **Open DevTools and Find the Network Request**
 
-   - Wait for the page to fully load.
+   - Wait for the page to fully load (may take a while).
    - Open Developer Tools (`F12` or right-click > Inspect).
    - Go to the **Network** tab.
 
