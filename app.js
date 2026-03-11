@@ -503,13 +503,14 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
           secRow.items.push({ type:'single', met: true, matched: item.chosen.code, options:[item.chosen.code] });
         } else {
           const options = item.options.map(o => o.code);
-          secRow.items.push({ type: options.length > 1 ? 'or' : 'single', met: false, matched: null, options });
+          const validOptions = options.filter(code => !usedSet.has(canonicalizeCode(code)));
+          const finalOptions = validOptions.length > 0 ? validOptions : options;
+          secRow.items.push({ type: finalOptions.length > 1 ? 'or' : 'single', met: false, matched: null, options: finalOptions });
         }
       }
     } else if (ruleType === 'COUNT') {
       const chosen = s._chosen || [];
       const needed = s.rule.min ?? 1;
-      const usedCodes = new Set(chosen.map(c => canonicalizeCode(c.code)));
 
       for (const c of chosen) {
         const label = (c.from && c.from !== s.name) ? `${c.code} (from ${c.from})` : c.code;
@@ -519,14 +520,23 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
       const stillNeed = Math.max(0, needed - chosen.length);
       if (stillNeed > 0) {
         const unmatched = s.items.filter(i => !i.matched);
-        for (let i = 0; i < Math.min(stillNeed, unmatched.length); i++) {
-          const item = unmatched[i];
-          const options = item.options
-            .map(o => o.code)
-            .filter(code => !usedCodes.has(canonicalizeCode(code)));
-          if (options.length > 0) {
-            secRow.items.push({ type: options.length > 1 ? 'or' : 'single', met: false, matched: null, options });
+        const validOptions = [];
+        for (const item of unmatched) {
+          const valid = item.options.filter(o => !usedSet.has(canonicalizeCode(o.code)));
+          if (valid.length > 0) {
+            validOptions.push(...valid.map(o => o.code));
           }
+        }
+        const uniqueValid = [...new Set(validOptions)];
+
+        if (uniqueValid.length > 0) {
+          secRow.items.push({
+            type: 'group_missing',
+            met: false,
+            matched: null,
+            options: uniqueValid,
+            description: `Select ${stillNeed} more from: ${uniqueValid.join(', ')}`
+          });
         }
       }
     } else if (ruleType === 'UNITS') {
@@ -558,24 +568,37 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
       if (needsMore) {
         const unmatched = s.items.filter(i => !i.matched);
         const allowedLists = s.rule.allow_from || [];
-        const avgUnits = chosen.length > 0 
-          ? chosen.reduce((sum, c) => sum + (c.units || 3), 0) / chosen.length 
-          : 3;
-        const coursesStillNeeded = Math.ceil((minUnits - haveUnits) / avgUnits);
-        const showCount = Math.min(coursesStillNeeded, unmatched.length);
         
-        for (let i = 0; i < showCount; i++) {
-          const options = unmatched[i].options.map(o => o.code);
-          secRow.items.push({ type: options.length > 1 ? 'or' : 'single', met: false, matched: null, options });
+        const validOptions = [];
+        for (const item of unmatched) {
+          const valid = item.options.filter(o => !usedSet.has(canonicalizeCode(o.code)));
+          if (valid.length > 0) {
+            validOptions.push(...valid.map(o => o.code));
+          }
         }
-        if (allowedLists.length > 0 && showCount < coursesStillNeeded) {
-          secRow.items.push({ 
-            type: 'single', 
-            met: false, 
-            matched: null, 
-            options: [`(additional courses from ${allowedLists.join(', ')})`] 
-          });
+        const uniqueValid = [...new Set(validOptions)];
+        
+        const neededUnitsNum = Math.max(0, minUnits - haveUnits);
+        const neededUnitsStr = Number(neededUnitsNum).toFixed(1).replace(/\.0$/, '');
+        let missingText = `Need ${neededUnitsStr} more units`;
+        
+        if (uniqueValid.length > 0) {
+          missingText += ` from: ${uniqueValid.join(', ')}`;
         }
+        if (allowedLists.length > 0) {
+          missingText += ` (or from ${allowedLists.join(', ')})`;
+        }
+        if (minDisciplines > 0 && !disciplinesMet) {
+          missingText += ` [Must meet discipline requirements]`;
+        }
+
+        secRow.items.push({
+          type: 'group_missing',
+          met: false,
+          matched: null,
+          options: uniqueValid,
+          description: missingText
+        });
       }
     }
 
@@ -2419,9 +2442,16 @@ function renderPrograms() {
                     ${status}<span>${it.matched}</span>
                   </div>`;
         }
-        const need = (it.type==='or')
-          ? it.options.join(' OR ')
-          : it.options[0];
+        
+        let need;
+        if (it.type === 'group_missing') {
+          need = it.description;
+        } else if (it.type === 'or') {
+          need = it.options.join(' OR ');
+        } else {
+          need = it.options[0];
+        }
+        
         const status = it.met ? `<span class="badge ok">Met</span>` : `<span class="badge warn">Missing</span>`;
         const matched = it.matched ? ` — used ${it.matched}` : '';
         let prereqHtml = '';
@@ -2451,17 +2481,17 @@ function renderPrograms() {
             }).filter(s => s).join('<br>');
             
             if (prereqLines) {
-              prereqHtml = `<div class="small" style="margin-left:24px; font-size:11px">${prereqLines}</div>`;
+              prereqHtml = `<div class="small" style="margin-left:24px; font-size:11px; margin-top:2px">${prereqLines}</div>`;
             }
           }
         }
         
-        return `<div class="small" style="display:flex; gap:6px; align-items:center">
+        return `<div class="small" style="display:flex; gap:6px; align-items:center; margin-top:4px">
                   ${status}<span>${need}${matched}</span>
                 </div>${prereqHtml}`;
       }).join('');
-      return `<div style="margin:8px 0">
-                <div class="small" style="color:var(--muted); font-weight:600">${sec.section}</div>
+      return `<div style="margin:12px 0">
+                <div class="small" style="color:var(--muted); font-weight:600; border-bottom:1px solid var(--border-light); padding-bottom:4px; margin-bottom:6px">${sec.section}</div>
                 ${rows}
               </div>`;
     }).join('');
