@@ -3090,24 +3090,6 @@ function renderPrograms() {
                 'GE: not required' :
                 `GE: ${Math.round(r.geScore.pct*100)}%`);
 
-        const isDegree = p.program_type && p.program_type.toLowerCase().includes('associate');
-        const tr = computeTranscript();
-        const countPlanned = $('#include-planned').checked;
-
-        let examUnits = 0;
-        for (const ux of state.userExams) {
-            const rows = state.examData[ux.program] || [];
-            const row = rows.find(r => r.exam === ux.exam);
-            if (row && ux.program !== 'Other') {
-                examUnits += (row.butte_units || 0);
-            }
-        }
-
-        const totalPlanUnits = tr.unitsCompleted + (countPlanned ? (tr.unitsIP + tr.unitsPL) : 0) + examUnits;
-        const unitWarning = (isDegree && totalPlanUnits < 60) ?
-            ` • <span style="color:var(--warning)">Short ${Math.max(0, 60 - totalPlanUnits).toFixed(1)} units for degree min</span>` :
-            '';
-
         let programTypeLabel = p.program_type;
         if (!programTypeLabel || programTypeLabel.trim() === '') {
             if (p.code && p.code.endsWith('.CA')) {
@@ -3185,11 +3167,7 @@ function recalcAll() {
     }
 
     const totalUnits = tr.unitsCompleted + tr.unitsIP + tr.unitsPL + examUnits;
-    $('#units-progress-text').textContent = `
-                    $ {
-                        totalUnits.toFixed(1)
-                    }
-                    / 60`;
+    $('#units-progress-text').textContent = `${totalUnits.toFixed(1)} / 60`;
     $('#units-progress-bar').style.width = `${Math.min(100, (totalUnits / 60) * 100)}%`;
 
     if (totalUnits >= 60) {
