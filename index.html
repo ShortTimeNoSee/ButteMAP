@@ -72,6 +72,15 @@
         <div><strong>In-Progress Units:</strong> <span id="units-ip">0</span></div>
         <div><strong>Planned Units:</strong> <span id="units-pl">0</span></div>
       </div>
+      <div style="margin-top: 16px; max-width: 600px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;" class="small">
+          <span style="color:var(--text-secondary); font-weight:600">Associate Degree Unit Requirement (60 min)</span>
+          <span id="units-progress-text" style="font-weight:600">0 / 60</span>
+        </div>
+        <div class="progress" style="width:100%; height:8px;">
+          <div id="units-progress-bar" style="width:0%"></div>
+        </div>
+      </div>
     </section>
 
     <section class="panel">
@@ -157,6 +166,7 @@
         <label>Sort by:
           <select id="prog-sort">
             <option value="score">Best % match</option>
+            <option value="fewest_units">Fewest units left</option>
             <option value="remaining_program">Fewest classes left (program)</option>
             <option value="alphabetical">Alphabetical (A-Z)</option>
           </select>
