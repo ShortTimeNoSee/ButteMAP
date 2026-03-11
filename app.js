@@ -464,6 +464,7 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
     const report = [];
     let requiredAtomCount = 0;
     let metAtomCount = 0;
+    let remainingUnits = 0;
 
     const cross = evalCrossListUnits({
         detail
@@ -481,6 +482,9 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
                 item.chosen = pick;
                 usedSet.add(pick.code);
                 metAtomCount += 1;
+            } else {
+                const minU = Math.min(...item.options.map(o => o.units || 0));
+                remainingUnits += (minU === Infinity ? 3 : minU);
             }
         }
     }
@@ -499,6 +503,19 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
         } = satisfyCountSection(s, s.items, poolsByList, takenSet, usedSet);
         s._chosen = chosen;
         metAtomCount += Math.min(chosen.length, need);
+
+        const stillNeed = Math.max(0, need - chosen.length);
+        if (stillNeed > 0) {
+            const unmatched = s.items.filter(i => !i.matched);
+            const minUnitsArr = unmatched.map(i => {
+                const mu = Math.min(...i.options.map(o => o.units || 0));
+                return mu === Infinity ? 3 : mu;
+            });
+            minUnitsArr.sort((a, b) => a - b);
+            for (let i = 0; i < Math.min(stillNeed, minUnitsArr.length); i++) {
+                remainingUnits += minUnitsArr[i];
+            }
+        }
 
         report.push({
             section: s.name,
@@ -521,6 +538,15 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
         s._chosen = chosen;
         s._units = gotUnits;
 
+        let deficit = Math.max(0, minUnits - gotUnits);
+        let listDeficits = 0;
+        const perListMin = s.rule.per_list_min_units || {};
+        for (const [listName, needUnits] of Object.entries(perListMin)) {
+            const have = chosen.filter(c => c.from === listName).reduce((t, c) => t + (c.units || 0), 0);
+            listDeficits += Math.max(0, needUnits - have);
+        }
+        remainingUnits += Math.max(deficit, listDeficits);
+
         const avgUnits = chosen.length > 0 ?
             chosen.reduce((sum, c) => sum + (c.units || 3), 0) / chosen.length :
             3;
@@ -540,12 +566,16 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
         requiredAtomCount += 1;
         if (cross.totalUnits >= cross.minTotal) metAtomCount += 1;
 
+        let listDeficits = 0;
         const perMinEntries = Object.entries(cross.perMin || {});
         requiredAtomCount += perMinEntries.length;
         for (const [lname, need] of perMinEntries) {
             const got = cross.earnedBySection[lname] || 0;
+            listDeficits += Math.max(0, need - got);
             if (got >= need) metAtomCount += 1;
         }
+        const totalDeficit = Math.max(0, cross.minTotal - cross.totalUnits);
+        remainingUnits += Math.max(totalDeficit, listDeficits);
     }
 
     const crossRules = detail.cross_list_rules || [];
@@ -767,6 +797,7 @@ function evaluateProgram(detail, transcript, countPlanned = false, skipGESection
         pct,
         requiredItems: requiredAtomCount,
         satisfied: metAtomCount,
+        remainingUnits,
         confidence: 1.0,
         details,
         cross_list_checks: crossFindings
@@ -2722,6 +2753,7 @@ function geCompletionForProgram(prog, tr) {
             return s && s.have >= (s.needCourses || 0) && s.units >= (s.needUnits || 0);
         });
         let missing = 0;
+        let missingUnits = 0;
         for (const a of leaves) {
             const s = out.perArea[a] || {
                 have: 0,
@@ -2739,6 +2771,7 @@ function geCompletionForProgram(prog, tr) {
             const unitAsClasses = defU > 0 ? Math.ceil(defU / 3) : 0;
 
             missing += Math.max(defC, unitAsClasses);
+            missingUnits += Math.max(defU, defC * 3);
         }
 
         return {
@@ -2747,6 +2780,7 @@ function geCompletionForProgram(prog, tr) {
             patternUsed: g.pattern,
             geSetId: g.id,
             est_remaining_courses: missing,
+            est_remaining_units: missingUnits,
             required_leaves: leaves.length,
             satisfied_leaves: doneLeaves.length
         };
@@ -2819,6 +2853,16 @@ function rankPrograms() {
     const typeFilter = $('#prog-type-filter').value || '';
     const deptFilter = ($('#prog-dept-filter').value || '').trim().toLowerCase();
 
+    let examUnits = 0;
+    for (const ux of state.userExams) {
+        const rows = state.examData[ux.program] || [];
+        const row = rows.find(r => r.exam === ux.exam);
+        if (row && ux.program !== 'Other') {
+            examUnits += (row.butte_units || 0);
+        }
+    }
+    const totalPlanUnits = tr.unitsCompleted + (countPlanned ? (tr.unitsIP + tr.unitsPL) : 0) + examUnits;
+
     const rows = [];
     for (const p of list) {
         if (typeFilter === '__cert__') {
@@ -2852,6 +2896,19 @@ function rankPrograms() {
             remainingSource = 'ge';
         }
 
+        let remainingProgUnits = courseScore.remainingUnits || 0;
+        let remainingGEUnits = 0;
+        if (isGECert && geScore) {
+            remainingGEUnits = geScore.est_remaining_units || 0;
+        } else if (geRequired && !ignoreGE && geScore) {
+            remainingGEUnits = geScore.est_remaining_units || 0;
+        }
+
+        const isDegree = p.program_type && p.program_type.toLowerCase().includes('associate');
+        const totalSpecificMissingUnits = remainingProgUnits + remainingGEUnits;
+        const degreeDeficit = isDegree ? Math.max(0, 60 - totalPlanUnits) : 0;
+        const effectiveRemainingUnits = Math.max(totalSpecificMissingUnits, degreeDeficit);
+
         const takenSet = new Set(tr.completed.filter(r => r.isPass).map(r => canonicalizeCode(r.code)));
         if (countPlanned) {
             tr.ip.forEach(r => takenSet.add(canonicalizeCode(r.code)));
@@ -2873,11 +2930,11 @@ function rankPrograms() {
             remainingProg,
             remainingSource,
             prereqsNeeded,
-            prereqDetails
+            prereqDetails,
+            effectiveRemainingUnits,
+            totalSpecificMissingUnits
         });
     }
-
-    const byKey = new Map();
     for (const r of rows) {
         const key = stableProgramKey(r.prog);
         const prev = byKey.get(key);
@@ -2895,7 +2952,15 @@ function rankPrograms() {
 
     const deduped = Array.from(byKey.values());
 
-    if (sortMode === 'remaining_program') {
+    if (sortMode === 'fewest_units') {
+        deduped.sort((a, b) => {
+            if (a.effectiveRemainingUnits !== b.effectiveRemainingUnits) return a.effectiveRemainingUnits - b.effectiveRemainingUnits;
+            if (b.total !== a.total) return b.total - a.total;
+            const ayA = parseInt((a.prog.year_label || '').slice(0, 4), 10) || 0;
+            const ayB = parseInt((b.prog.year_label || '').slice(0, 4), 10) || 0;
+            return ayB - ayA;
+        });
+    } else if (sortMode === 'remaining_program') {
         deduped.sort((a, b) => {
             if (a.remainingProg !== b.remainingProg) return a.remainingProg - b.remainingProg;
             if (b.total !== a.total) return b.total - a.total;
@@ -3063,6 +3128,13 @@ function renderPrograms() {
         displayName = displayName.replace(/\s*\(Eff:\s*[^)]+\)/i, '').trim();
         displayName = displayName.replace(/-(AS-T|AA-T|AS|AA|CA|CERT)$/i, '').trim();
 
+        // 1. Calculate the warnings BEFORE opening the template literal
+        const isDegree = p.program_type && p.program_type.toLowerCase().includes('associate');
+        const unitWarning = (isDegree && r.effectiveRemainingUnits > r.totalSpecificMissingUnits) ?
+            ` • <span style="color:var(--warning)">Requires ${Math.max(0, r.effectiveRemainingUnits - r.totalSpecificMissingUnits).toFixed(1)} elective units to hit 60 min</span>` :
+            '';
+
+        // 2. Open the template literal
         const card = document.createElement('div');
         card.className = 'prog';
         card.innerHTML = `
@@ -3083,7 +3155,7 @@ function renderPrograms() {
       <div class="meta" style="margin-top:6px">
         <span>Program req: ${Math.round(r.courseScore.pct*100)}% (items ${r.courseScore.satisfied}/${r.courseScore.requiredItems})</span>
         <span> • ${geLabel}</span>
-        <span> • ${remainingLabel}: ${remainingVal}${prereqNote}</span>${unitWarning}
+        <span> • ${remainingLabel}: ${remainingVal} (min ${r.effectiveRemainingUnits} units)${prereqNote}</span>${unitWarning}
       </div>
 
       <details style="margin-top:10px">
@@ -3113,7 +3185,11 @@ function recalcAll() {
     }
 
     const totalUnits = tr.unitsCompleted + tr.unitsIP + tr.unitsPL + examUnits;
-    $('#units-progress-text').textContent = `${totalUnits.toFixed(1)} / 60`;
+    $('#units-progress-text').textContent = `
+                    $ {
+                        totalUnits.toFixed(1)
+                    }
+                    / 60`;
     $('#units-progress-bar').style.width = `${Math.min(100, (totalUnits / 60) * 100)}%`;
 
     if (totalUnits >= 60) {
